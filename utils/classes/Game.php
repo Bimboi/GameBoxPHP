@@ -6,8 +6,6 @@
     abstract protected function initGameVariables();
 
     abstract protected function unsetGameVariables();
-     
-    abstract protected function IsGameFinished();
 } 
 
 ?>

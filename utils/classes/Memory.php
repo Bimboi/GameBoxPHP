@@ -7,7 +7,7 @@ class Memory extends Game
     private $first_selected;
     private $second_selected;
 
-    function __construct()
+    public function __construct()
     {
         $this->game_name = "memory";
         $this->attempts = $_SESSION['attempts'];
@@ -17,6 +17,7 @@ class Memory extends Game
 
     function initGameVariables()
     {
+        $_SESSION['game_name'] = $this->game_name;
         $_SESSION['attempts'] = 0;
         $_SESSION['match_count'] = 0;
 
@@ -27,17 +28,6 @@ class Memory extends Game
     {
         unset($_SESSION['attempts']);
         unset($_SESSION['match_count']);
-    }
-
-    function IsGameFinished()
-    {
-        if ($this->attempts == "10") {
-            return "lose";
-        } else if ($this->match_count == "4") {
-            return "win";
-        } else {
-            return "not yet";
-        }
     }
 
     public function shuffleCards()
