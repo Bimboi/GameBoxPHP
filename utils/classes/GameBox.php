@@ -26,10 +26,12 @@ class GameBox {
 
     function setupLuckyGame() {
         $this->lucky_game = new Guessing();
+        $this->lucky_game->initGameVariables();
     }
 
     function setupSpellMeGame() {
         $this->spell_game = new Spelling();
+        $this->spell_game->initGameVariables();
     }
 }
 ?>

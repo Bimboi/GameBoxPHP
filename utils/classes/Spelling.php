@@ -4,17 +4,16 @@ class Spelling extends Game {
     private $difficulty;
     private $wordSet;
 
-    function __construct($difficulty)
+    function __construct()
     {
         $this->game_name = "spell";
-        $this->difficulty = $difficulty;
+        $this->difficulty = $_SESSION['difficulty'];
     }
 
     function initGameVariables()
     {
         $_SESSION['game_name'] = $this->game_name;
         $_SESSION['time_spent'] = 0;
-        $_SESSION['difficulty'] = $this->difficulty;
 
         $this->setWordSet();
     }
@@ -23,6 +22,7 @@ class Spelling extends Game {
     {
         unset($_SESSION['game_name']);
         unset($_SESSION['time_spent']);
+        unset($_SESSION['difficulty']);
     }
 
     public function setWordSet() {
