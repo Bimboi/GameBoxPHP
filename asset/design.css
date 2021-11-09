@@ -1,0 +1,87 @@
+@import url('https://fonts.googleapis.com/css?family=Lobster&display=swap');
+
+/* body {
+  background: #fff;
+} */
+/* 
+.banner-text {
+	width: 100%;
+	position: absolute;
+	z-index: 1;
+}
+.banner-text ul {
+	height: 50px;
+	float: right;
+}
+.banner-text ul li {
+	display: inline-block;
+	padding: 40px 15px;
+	text-transform: uppercase;
+	color: #fff;
+	font-size: 20px;
+}
+.banner-text ul li:hover {
+	cursor: pointer;
+} */
+
+.title {
+  font-size: 2.5rem;
+  font-family: 'Lobster', cursive;
+}
+
+.wrapper {
+  animation: scroll 70s linear infinite;
+  background: url("https://www.toptal.com/designers/subtlepatterns/patterns/y-so-serious.png"), #111111;
+  color: rgb(43, 40, 40);
+  height: 100vh;
+  margin: 0PX;
+  min-width: 360px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  perspective: 1000px;
+  perspective-origin: 50% 50%;
+  
+}
+
+@keyframes scroll {
+   100%{
+    background-position:0px -3000px;
+  }
+}
+
+@media (prefers-reduced-motion) {
+  .wrapper {
+    animation: scroll 100s linear infinite;
+  }
+}
+
+/* @media only screen and (max-width: 1240px) {
+  .custom-card-height {
+    
+  }
+} */
+/* @media only screen and (max-width : 1200px) {
+
+  .container-fluid { width: 300px; } 
+
+} */
+.container-index {
+  display: grid;
+  grid-gap: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  text-align: center; 
+  margin: 40px;
+}
+
+
+@media only screen and (max-width: 1240px) {
+  .item {
+    height: 350px;
+  }
+}
+
+/* .item:nth-last-child(1):nth-child(odd) {
+	grid-column: 1 / span 2;
+} */

@@ -7,13 +7,13 @@ class GameSession {
     {
         switch ($name) {
             case "memory":
-                $this->game_session_id = random_num(14) . "memory";
+                $this->game_session_id = $this->random_num(14) . "memory";
                 break;
             case "lucky":
-                $this->game_session_id = random_num(15) . "lucky";
+                $this->game_session_id = $this->random_num(15) . "lucky";
                 break;
             case "spell":
-                $this->game_session_id = random_num(15) . "spell";
+                $this->game_session_id = $this->random_num(15) . "spell";
                 break;
         }
     }

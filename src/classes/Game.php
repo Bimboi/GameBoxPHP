@@ -1,7 +1,6 @@
 <?php  
  
- abstract Class Game{  
-    public $game_name;
+ abstract Class Game{
        
     abstract protected function initGameVariables();
 

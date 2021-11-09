@@ -8,8 +8,9 @@ class Connection {
     private $conn;
     
     function setConnection() {
-        $this->conn = mysqli_connect($this->dbhost, $this->dbuser, 
-        $this->dbpass, $this->dbname);
+        $this->conn = mysqli_connect(
+            $this->dbhost, $this->dbuser, $this->dbpass, $this->dbname
+        );
     }
 
     function getConnection() {
@@ -21,8 +22,9 @@ class Connection {
             if (isset($_SESSION['user_id'])) {
                 unset($_SESSION['user_id']);
             }
-            header("Location: signin.php");
-            die;
+            return 1; // error
+        } else {
+            return 0; // connection exist
         }
     }
 }

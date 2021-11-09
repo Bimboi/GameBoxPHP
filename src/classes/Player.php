@@ -6,11 +6,11 @@ class Player extends User {
 
     function __construct()
     {
-        $this->name = $_SESSION['user_name'];
+        $this->name = isset($_SESSION['user_name']) ? $_SESSION['user_name'] : '';
     }
 
     function setSessionID() {
-        $this->session_id =  $this->random_num(3) . $this->name;
+        $this->session_id =  $this->name . $this->random_num(3);
     }
 
     function getSessionID() {
