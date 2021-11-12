@@ -3,7 +3,7 @@ if (!isset($_SESSION)) {
     session_start();
 }
 
-if (!isset($_SESSION['session_id']) && !isset($_SESSION['game_session_id'])) {
+if (!isset($_SESSION['session_id']) || !isset($_SESSION['game_session_id'])) {
     header("Location: ../../account/signin.php");
     $_SESSION['game_redirect'] = "lucky game";
     die;

@@ -5,7 +5,7 @@ if (!isset($_SESSION)) {
 
 if (!isset($_SESSION['session_id'])) {
     header("Location: ../../account/signin.php");
-    $_SESSION['game_redirect'] = "lucky game";
+    $_SESSION['game_redirect'] = "lucky_game";
     die;
 }
 
