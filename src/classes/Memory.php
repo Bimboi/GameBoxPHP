@@ -15,6 +15,8 @@ class Memory extends Game
 
     function initGameVariables()
     {
+        $_SESSION['input_status'] = "";
+        $_SESSION['disable_all_input'] = "no";
         $_SESSION['game_name'] = $this->game_name;
         $_SESSION['attempts'] = 0;
         $_SESSION['match_count'] = 0;
@@ -204,25 +206,41 @@ class Memory extends Game
             echo "<script>console.log('match count " . $_SESSION['match_count'] . "')</script>";
 
             if ($_SESSION['match_count'] == 4) {
-                $this->unsetPicks();
+                // $this->unsetPicks();
+            // $_SESSION['input_status'] = "disabled";
+
                     for ($x = 1; $x <= 9; $x++) {
                         $name_memory_ref = "memory_" . $x;
                         if ($_SESSION[$name_memory_ref][1] == "hidden") {
                             $_SESSION[$name_memory_ref] = [$_SESSION[$name_memory_ref][0], "revealed"];
+
                         }
                     }
+                    $_SESSION['game_result'] = "won";
+                    header( "refresh:2; url=brainy_result.php"); 
+
                 // header("Location: brainy_index.php");
                 // die;
+            } else {
+                if ($_SESSION['attempts'] == 10) {
+                    $_SESSION['game_result'] = "lost";
+                    header( "refresh:2; url=brainy_result.php"); 
+                }
             }
         } else {
-            $name_first_pick = $_SESSION['first_pick'];
-            $name_second_pick = $_SESSION['second_pick'];
-            $_SESSION[$name_first_pick] = [$_SESSION[$name_first_pick][0], "hidden"];
-            $_SESSION[$name_second_pick] = [$_SESSION[$name_second_pick][0], "hidden"];
-            echo "<script>console.log('inside unset " . $name_first_pick . "')</script>";
-            echo "<script>console.log('inside unset " . $name_second_pick . "')</script>";
+            // $_SESSION['input_status'] = "disabled";
+        $_SESSION['disable_all_input'] = "yes";
+
+    header( "refresh:3; url=" . $_SERVER['PHP_SELF']); 
+
+            // $name_first_pick = $_SESSION['first_pick'];
+            // $name_second_pick = $_SESSION['second_pick'];
+            // $_SESSION[$name_first_pick] = [$_SESSION[$name_first_pick][0], "hidden"];
+            // $_SESSION[$name_second_pick] = [$_SESSION[$name_second_pick][0], "hidden"];
+            // echo "<script>console.log('inside unset " . $name_first_pick . "')</script>";
+            // echo "<script>console.log('inside unset " . $name_second_pick . "')</script>";
         }
-        $this->unsetPicks();
+        // $this->unsetPicks();
         // header("Location: brainy_play.php");
         // die;
     }

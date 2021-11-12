@@ -3,9 +3,9 @@ if (!isset($_SESSION)) {
     session_start();
 }
 
-if (!isset($_SESSION['session_id']) || !isset($_SESSION['game_session_id'])) {
+if (!isset($_SESSION['session_id']) && !isset($_SESSION['game_session_id'])) {
     header("Location: ../../account/signin.php");
-    $_SESSION['game_redirect'] = "lucky_game";
+    $_SESSION['game_redirect'] = "brainy_game";
     die;
 }
 
@@ -24,8 +24,8 @@ if (isset($_SESSION['game_result'])) {
     }
     unset($_SESSION['game_session_id']);
 } else {
-    header("Location: lucky_index.php");
-    $game = new Guessing();
+    header("Location: brainy_index.php");
+    $game = new Memory();
     $game->unsetGameVariables();
     unset($_SESSION['game_session_id']);
     die;
@@ -45,13 +45,13 @@ if (isset($_SESSION['game_result'])) {
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/all.css">
 </head>
 
-<body class="wrapper" style="background: url('https://www.toptal.com/designers/subtlepatterns/patterns/bananas.png');">
+<body class="wrapper" style="background: url('https://www.toptal.com/designers/subtlepatterns/patterns/darkness.png');">
     <div class="container">
         <div class="row justify-content-center">
             <aside class="col-sm-6">
                 <div class="card shadow" style="position:relative; text-align:center">
                     <article class="card-body">
-                        <h1 class="card-title text-center mb-4 mt-1">🔥 Lucky Number 🔥</h1>
+                        <h1 class="card-title text-center mb-4 mt-1">🔥 Brainy! 🔥</h1>
                         <hr>
                         <?php
                         if($_SESSION['game_result'] == "won") {
@@ -59,12 +59,12 @@ if (isset($_SESSION['game_result'])) {
                             echo "<p>Number of attempts: " . $_SESSION['attempts'] . "</p>";
                         } else {
                             echo "<p>You lost " . $_SESSION['user_name'] . " 😵‍💫";
-                            echo "<p>🙊 The answer is " . $_SESSION['answer_lucky'] . " 🤯</p>";
+                            echo "<p>Number of attempts: " . $_SESSION['attempts'] . "</p>";
                             echo "</br>Keep it up next time gamer!</p>";
                         }
                         unset($_SESSION['game_result']);
                         ?>
-                        <p><a href="lucky_index.php">Start another game?</a>
+                        <p><a href="brainy_index.php">Start another game?</a>
                     </article>
                 </div>
             </aside>
@@ -75,6 +75,6 @@ if (isset($_SESSION['game_result'])) {
 </html>
 
 <?php
-$game = new Guessing();
+$game = new Memory();
 $game->unsetGameVariables();
 ?>

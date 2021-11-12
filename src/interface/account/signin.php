@@ -22,13 +22,19 @@ if (isset($_POST['username_signin'])) {
         $_SESSION['signinOK'] = "No";
         header("Location: " . $_SERVER['PHP_SELF']);
     } else {
-        $_SESSION['user_name'] = $result['user_name'];
+        $user_name = $result['user_name'];
+        $_SESSION['user_name'] = $user_name;
         $_SESSION['signinOK'] = "Yes";
 
         $player = new Player();
         $player->setSessionID();
-        $_SESSION['session_id'] = $player->getSessionID();
+        $session_id = $player->getSessionID();
+        $_SESSION['session_id'] = $session_id;
         
+        $query = "insert into user_logs (session_id,user_name) values ('$session_id','$user_name')";
+
+        mysqli_query($con->getConnection(), $query);
+
         if(isset($_SESSION['game_redirect'])) {
             $game = $_SESSION['game_redirect'];
             unset($_SESSION['game_redirect']);

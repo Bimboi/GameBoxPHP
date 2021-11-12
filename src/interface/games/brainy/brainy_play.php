@@ -3,27 +3,19 @@ if (!isset($_SESSION)) {
     session_start();
 }
 
-// if (!isset($_SESSION['session_id']) || !isset($_SESSION['game_session_id'])) {
-//     header("Location: ../../account/signin.php");
-//     $_SESSION['game_redirect'] = "brainy_game";
-//     die;
-// }
+if (!isset($_SESSION['session_id']) && !isset($_SESSION['game_session_id'])) {
+    header("Location: ../../account/signin.php");
+    $_SESSION['game_redirect'] = "brainy_game";
+    die;
+}
 
 include_once("../../../classes/Game.php");
 include_once("../../../classes/Memory.php");
 
 $game = new Memory();
-
-// if (!isset($_SESSION['memory_1'])) {
-//     $game->initGameVariables();
-// }
-
-// if (!isset($_SESSION['first_pick']) || !isset($_SESSION['second_pick'])) {
 $game->setSelectedCards();
-// }
-if (isset($_SESSION['checking_status'])) {
-    unset($_SESSION['checking_status']);
 
+if (isset($_SESSION['first_pick']) && isset($_SESSION['second_pick'])) {
     $game->matchSelectedCards();
 }
 
@@ -40,6 +32,12 @@ if (isset($_SESSION['checking_status'])) {
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/all.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        if ( window.history.replaceState ) {
+  window.history.replaceState( null, null, "/phpcourseneyney/proj_php/src/interface/games/brainy/brainy_index.php" );
+}
+    </script>
+    
     <?php
 
     // for ($x = 1; $x <= 9; $x++) {
@@ -48,20 +46,23 @@ if (isset($_SESSION['checking_status'])) {
     //     $name_card = "card_" . $x . "=";
     //     $name_send = "send_" . $x;
     //     echo "<script>
-    //             function " . $name_func ."(){
-    //                 $.ajax({
-    //                     type:'post',
-    //                     url:'brainy_process.php',
-    //                     data:'" . $name_card . "" . $name_memory . "',
-    //                     cache:false,
-    //                     success:function(){
-    //                         $('#" . $name_memory . "').html(\"<input type='image' id='" . $name_memory . "' src='" . $_SESSION[$name_memory][0] . "' onclick='return " . $name_send . "()'>\");
-    //                     }
-    //                 })
-    //                 return false;
+    //     function " . $name_func ."(){
+    //         $.ajax({
+    //             type:'post',
+    //             url:'brainy_process.php',
+    //             data:'" . $name_card . "" . $name_memory . "',
+    //             cache:false,
+    //             success:function(){
+    //                 if(document.getElementById(" . $name_memory . ").src == '../../../../asset/images/Blue_Cover.png'){
+    //                     document.getElementById(" . $name_memory . ").src = " . $_SESSION[$name_memory][0] . ";
+    //                 } else {
+    //                     document.getElementById(" . $name_memory . ").src == '../../../../asset/images/Blue_Cover.png';
+    //                 }
     //             }
-    //         </script>";
-    // }
+    //         })
+    //         return false;
+    //     }
+    //     </script>";
     ?>
 </head>
 
@@ -79,40 +80,45 @@ if (isset($_SESSION['checking_status'])) {
                         <center>
                             <table border='0' style='border-collapse:collapse; text-align:center; height:350px; width:350px;'>
                                 <?php
+                                    for ($x = 1; $x <= 9; $x += 3) {
+                                        echo "<tr>";
+                                        for ($y = $x; $y < $x + 3; $y++) {
+                                            $name_memory = "memory_" . $y;
+                                            $name_card = "card_" . $y;
+                                            $name_send = "send_" . $y;
+                                            if ($_SESSION[$name_memory][1] == "revealed") {
+                                                $card = $_SESSION[$name_memory][0];
+                                                $_SESSION['input_status'] = "disabled";
+                                            } else {
+                                                $card = "../../../../asset/images/Blue_Cover.png";
+                                                $_SESSION['input_status'] = "";
+                                            }
 
-                                for ($x = 1; $x <= 9; $x += 3) {
-                                    echo "<tr>";
-                                    for ($y = $x; $y < $x + 3; $y++) {
-                                        $name_memory = "memory_" . $y;
-                                        $name_card = "card_" . $y;
-                                        $name_send = "send_" . $y;
-                                        $card = $_SESSION[$name_memory][1] == "revealed" ? $_SESSION[$name_memory][0] : "../../../../asset/images/Blue_Cover.png";
-                                        echo
-                                        "<td>
-                                    <form method='POST' action='brainy_play.php'>
-                                        <input type='hidden' name='" . $name_card . "' value='" . $name_memory . "'>
-                                        <input type='image' id='" . $name_memory . "' src='" . $card . "'>
-                                    </form>
-                                </td>";
-                                        // echo 
-                                        // "<td>
-                                        //     <form method='POST' action='brainy_play.php'>
-                                        //         <input type='hidden' name='" . $name_card . "' value='" . $_SESSION[$name_memory][0] . "'>
-                                        //         <input type='image' src='" . $card . "'>
-                                        //     </form>
-                                        // </td>";
+                                            if ($_SESSION['disable_all_input'] == "yes") {
+                                                $_SESSION['input_status'] = "disabled";
+                                            }
+                                            
+                                            // $card = $_SESSION[$name_memory][1] == "revealed" ? $_SESSION[$name_memory][0] : "../../../../asset/images/Blue_Cover.png";
+                                            echo
+                                            "<td>
+                                        <form method='POST' action='brainy_play.php'>
+                                            <input type='hidden' name='" . $name_card . "' value='" . $name_memory . "'>
+                                            <input type='image' id='" . $name_memory . "' src='" . $card . "' " . $_SESSION['input_status'] . ">
+                                        </form>
+                                    </td>";
+                                            // echo 
+                                            // "<td>
+                                            //     <form method='POST' action='brainy_play.php'>
+                                            //         <input type='hidden' name='" . $name_card . "' value='" . $_SESSION[$name_memory][0] . "'>
+                                            //         <input type='image' src='" . $card . "'>
+                                            //     </form>
+                                            // </td>";
+                                        }
+                                        echo "</tr>";
                                     }
-                                    echo "</tr>";
-                                }
-                                
+                                    echo "</table>";
                                 ?>
                             </table>
-                            <?php
-                            if (isset($_SESSION['first_pick']) && isset($_SESSION['second_pick'])) {
-                                $_SESSION['checking_status'] = 1;
-                            }
-
-                            ?>
                         </center>
 
                         <!-- <form method="POST" action="" style="margin-bottom: 10px;"> -->
@@ -232,3 +238,20 @@ if (isset($_SESSION['checking_status'])) {
 </body>
 
 </html>
+
+<?php
+if (isset($_SESSION['first_pick']) && isset($_SESSION['second_pick'])) {
+    if ($_SESSION[$_SESSION['first_pick']][0] != $_SESSION[$_SESSION['second_pick']][0]) {
+        $name_first_pick = $_SESSION['first_pick'];
+        $name_second_pick = $_SESSION['second_pick'];
+        $_SESSION[$name_first_pick] = [$_SESSION[$name_first_pick][0], "hidden"];
+        $_SESSION[$name_second_pick] = [$_SESSION[$name_second_pick][0], "hidden"];
+    }
+    echo "<script>console.log('inside unset " . $_SESSION['first_pick'] . "')</script>";
+    echo "<script>console.log('inside unset " . $_SESSION['second_pick'] . "')</script>";
+    
+    $_SESSION['disable_all_input'] = "no";
+    unset($_SESSION['first_pick']);
+    unset($_SESSION['second_pick']);
+}
+?>

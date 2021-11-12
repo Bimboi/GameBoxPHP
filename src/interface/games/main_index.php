@@ -9,10 +9,10 @@ include_once("../../classes/GamePlatform.php");
 // include("../utils/connection.php");
 // include("../utils/scores_functions.php");
 
-if (!isset($_SESSION['session_id'])) {
-    header("Location: ../account/signin.php");
-    die;
-}
+// if (!isset($_SESSION['session_id'])) {
+//     header("Location: ../account/signin.php");
+//     die;
+// }
 
 ?>
 
@@ -46,7 +46,7 @@ if (!isset($_SESSION['session_id'])) {
                         <form>
                             <div ontouchstart="">
                                 <div class="button">
-                                    <a href="brainy/brainy_index.php" style="text-decoration: none;">GO</a>
+                                    <a href="brainy/brainy_index.php" style="text-decoration: none;">🕹️</a>
                                 </div>
                             </div>
                         </form>
@@ -100,7 +100,7 @@ if (!isset($_SESSION['session_id'])) {
                         <form>
                             <div ontouchstart="">
                                 <div class="button">
-                                    <a href="lucky/lucky_index.php" style="text-decoration: none;">GO</a>
+                                    <a href="lucky/lucky_index.php" style="text-decoration: none;">🕹️</a>
                                 </div>
                             </div>
                         </form>
@@ -154,7 +154,7 @@ if (!isset($_SESSION['session_id'])) {
                         <form>
                             <div ontouchstart="">
                                 <div class="button">
-                                    <a href="spell/spell_index.php" style="text-decoration: none;">GO</a>
+                                    <a href="spell/spell_index.php" style="text-decoration: none;">🕹️</a>
                                 </div>
                             </div>
                         </form>

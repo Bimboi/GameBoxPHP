@@ -51,12 +51,12 @@ echo "<script>console.log('attempt " . $_SESSION['attempts'] . "')</script>";
                                 <div class="row justify-content-center">
                                     <div ontouchstart="">
                                         <div class="button_back">
-                                            <a href="../main_index.php" style="text-decoration: none;">Back</a>
+                                            <a href="../main_index.php" style="color: white;">Back</a>
                                         </div>
                                     </div>
                                     <div ontouchstart="">
                                         <div class="button">
-                                            <a href="brainy_play.php" style="text-decoration: none;">Start</a>
+                                            <a href="brainy_play.php" style="color: white;">Start</a>
                                         </div>
                                     </div>
                                 </div>

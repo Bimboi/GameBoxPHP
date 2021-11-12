@@ -3,7 +3,7 @@ if (!isset($_SESSION)) {
     session_start();
 }
 
-if (!isset($_SESSION['session_id']) || !isset($_SESSION['game_session_id'])) {
+if (!isset($_SESSION['session_id']) && !isset($_SESSION['game_session_id'])) {
     header("Location: ../../account/signin.php");
     $_SESSION['game_redirect'] = "lucky_game";
     die;
@@ -43,10 +43,10 @@ include_once("../../../classes/Guessing.php");
                         <hr>
                         <p>We have selected a random number between 1 - 50.
                             </br>See if you can guess it.</p>
-                        <form method="POST" action="" style="margin-bottom: 10px;">
+                        <form method="POST" action="lucky_play.php" style="margin-bottom: 10px;">
                             <div>
                                 <label for="guessField">Enter a guess: </label>
-                                <input type="text" id="guessField" name="guess">
+                                <input type="number" min="1" max="50" oninput="validity.valid||(value='');" id="guessField" name="guess" required>
                                 <input type="submit" value="Submit guess" class="guessSubmit" id="submitguess">
                             </div>
                         </form>
