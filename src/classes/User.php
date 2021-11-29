@@ -6,10 +6,10 @@ class User
     private $password;
     private $db_connection;
 
-    function __construct()
+    function __construct($username, $password)
     {
-        $this->username = isset($_SESSION['user_name']) ? $_SESSION['user_name'] : "";
-        $this->password = isset($_SESSION['password']) ? $_SESSION['password'] : "";
+        $this->username = $username;
+        $this->password = $password;
     }
 
     function setUsername($newName)
@@ -36,52 +36,31 @@ class User
         return $this->password;
     }
 
-    function signUp($name, $password, $con)
+    function signUp($con)
     {
-        //read from database
-        $query = "select * from users where user_name = '$name' limit 1";
+        $query = "select * from users where user_name = '$this->username' limit 1";
         $result = mysqli_query($con, $query);
 
-        if (mysqli_num_rows($result) == 0) {
-
-            $user_id = $this->random_num(20);
-            $query = "insert into users (user_id,user_name,password) values ('$user_id','$name','$password')";
-
-            mysqli_query($con, $query);
-
-            return 0;
-        } else {
-            return 1;
+        if ($result and mysqli_num_rows($result) == 0) {
+            $query = "insert into users (user_name,password) values ('$this->username','$this->password')";
+            $result = mysqli_query($con, $query);
         }
+        return $result;
     }
 
-    function signIn($name, $password, $con)
+    function signIn($con)
     {
-        //read from database
-        $query = "select * from users where user_name = '$name' limit 1";
+        $query = "select * from users where user_name = '$this->username' limit 1";
         $result = mysqli_query($con, $query);
-        
-        if ($result && mysqli_num_rows($result) > 0) {
 
+        if ($result and mysqli_num_rows($result) > 0) {
             $user_data = mysqli_fetch_assoc($result);
 
-            if ($user_data['password'] === $password) {
+            if ($user_data and $user_data['password'] === $this->password) {
                 return $user_data;
-            } else {
-                return 1;
             }
-        } else {
-            return 1;
         }
-    }
-
-    function signOut() {
-        $_SESSION['signinOK'] = "No";
-        unset($_SESSION['user_name']);
-        unset($_SESSION['password']);
-
-        header("Location: account/signin.php");
-        die;
+        return false;
     }
 
     function random_num($length)

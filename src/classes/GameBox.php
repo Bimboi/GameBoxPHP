@@ -11,26 +11,30 @@ class GameBox
     private $lucky_game;
     private $spell_game;
 
+    private $brainy_name = Constants::brainy_name;
+    private $lucky_name = Constants::lucky_name;
+    private $spell_name = Constants::spell_name;
+
     function setGame($selected_game)
     {
         $gameSession = new GameSession();
         switch ($selected_game) {
-            case 'memory':
-                $gameSession->setGameSessionID('memory');
+            case $this->brainy_name:
+                $gameSession->setGameSessionID($this->brainy_name);
                 $_SESSION['game_session_id'] = $gameSession->getGameSessionID();
-                $_SESSION['selected_game'] = "memory";
+                $_SESSION['selected_game'] = $this->brainy_name;
                 $this->setupBrainyGame();
                 break;
-            case 'lucky':
-                $gameSession->setGameSessionID('lucky');
+            case $this->lucky_name:
+                $gameSession->setGameSessionID($this->lucky_name);
                 $_SESSION['game_session_id'] = $gameSession->getGameSessionID();
-                $_SESSION['selected_game'] = "lucky";
+                $_SESSION['selected_game'] = $this->lucky_name;
                 $this->setupLuckyGame();
                 break;
-            case 'spell':
-                $gameSession->setGameSessionID('spell');
+            case $this->spell_name:
+                $gameSession->setGameSessionID($this->spell_name);
                 $_SESSION['game_session_id'] = $gameSession->getGameSessionID();
-                $_SESSION['selected_game'] = "spell";
+                $_SESSION['selected_game'] = $this->spell_name;
                 $this->setupSpellMeGame();
                 break;
         }

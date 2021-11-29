@@ -1,30 +1,27 @@
 <?php
 
 class Connection {
-    private $dbhost = "localhost";
-    private $dbuser = "root";
-    private $dbpass = "";
-    private $dbname = "mini_gamebox";
-    private $conn;
+    private $_dbhost = "localhost";
+    private $_dbuser = "root";
+    private $_dbpass = "";
+    private $_dbname = "mini_gamebox";
+    private $_conn, $_msg;
     
-    function setConnection() {
-        $this->conn = mysqli_connect(
-            $this->dbhost, $this->dbuser, $this->dbpass, $this->dbname
+    function __construct()
+    {
+        $this->_conn = mysqli_connect(
+            $this->_dbhost, $this->_dbuser, $this->_dbpass, $this->_dbname
         );
     }
 
-    function getConnection() {
-        return $this->conn;
-    }
-
     function checkConnection() {
-        if(!$this->conn) {
-            if (isset($_SESSION['user_id'])) {
-                unset($_SESSION['user_id']);
-            }
-            return 1; // error
+        if(!$this->_conn->connect_error) {            
+            return $this->_conn;
         } else {
-            return 0; // connection exist
+            $this->_msg = "Database connection failed: ";
+            $this->_msg .= mysqli_connect_error();
+            $this->_msg .= " : " . mysqli_connect_errno();
+            return $this->_msg;
         }
     }
 }

@@ -3,9 +3,13 @@ if (!isset($_SESSION)) {
     session_start();
 }
 
+include_once("../../../classes/Constants.php");
+
+$game_name = Constants::lucky_name;
+
 if (!isset($_SESSION['session_id'])) {
     header("Location: ../../account/signin.php");
-    $_SESSION['game_redirect'] = "lucky_game";
+    $_SESSION['game_redirect'] = $game_name;
     die;
 }
 
@@ -13,7 +17,7 @@ include_once("../../../classes/Connection.php");
 include_once("../../../classes/GamePlatform.php");
 
 $game = new GamePlatform();
-$game->pickGame("lucky");
+$game->pickGame($game_name);
 
 ?>
 
@@ -36,7 +40,6 @@ $game->pickGame("lucky");
         <div class="container">
             <div class="row justify-content-center">
                 <aside class="col-sm-6">
-
                     <div class="card shadow" style="position:relative; text-align:center">
                         <article class="card-body">
                             <h1 class="card-title text-center mb-4 mt-1">😱 Lucky Number 🙈</h1>
@@ -47,30 +50,28 @@ $game->pickGame("lucky");
                                 <div class="row justify-content-center">
                                     <div ontouchstart="">
                                         <div class="button_back">
-                                            <a href="../main_index.php" style="color: white;">Back</a>
+                                            <a href="../main_index.php" style="color: white; font-weight: bold;">Back</a>
                                         </div>
                                     </div>
                                     <div ontouchstart="">
                                         <div class="button">
-                                            <a href="lucky_play.php" style="color: white;">Start</a>
+                                            <a href="lucky_play.php" style="color: white; font-weight: bold;">Start</a>
                                         </div>
                                     </div>
                                 </div>
-
                             </div>
                         </article>
-
                     </div>
                 </aside>
             </div>
         </div>
     </div>
     <div class="navbar fixed-bottom" style="color: black;">
-            <?php
-            $id = isset($_SESSION['session_id']) ? "ID: " . $_SESSION['session_id'] : '';
-            echo $id;
-            ?>
-        </div>
+        <?php
+        $id = isset($_SESSION['session_id']) ? "ID: " . $_SESSION['session_id'] : '';
+        echo $id;
+        ?>
+    </div>
 </body>
 
 </html>

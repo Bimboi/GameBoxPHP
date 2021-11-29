@@ -1,29 +1,5 @@
 @import url('https://fonts.googleapis.com/css?family=Lobster&display=swap');
 
-/* body {
-  background: #fff;
-} */
-/* 
-.banner-text {
-	width: 100%;
-	position: absolute;
-	z-index: 1;
-}
-.banner-text ul {
-	height: 50px;
-	float: right;
-}
-.banner-text ul li {
-	display: inline-block;
-	padding: 40px 15px;
-	text-transform: uppercase;
-	color: #fff;
-	font-size: 20px;
-}
-.banner-text ul li:hover {
-	cursor: pointer;
-} */
-
 .title {
   font-size: 2.5rem;
   font-family: 'Lobster', cursive;
@@ -42,10 +18,9 @@
   align-items: center;
   perspective: 1000px;
   perspective-origin: 50% 50%;
-  
 }
 
-@keyframes scroll {
+/* @keyframes scroll {
    100%{
     background-position:0px -3000px;
   }
@@ -53,35 +28,188 @@
 
 @media (prefers-reduced-motion) {
   .wrapper {
-    animation: scroll 100s linear infinite;
-  }
-}
-
-/* @media only screen and (max-width: 1240px) {
-  .custom-card-height {
-    
+    animation: scroll 200s linear infinite;
   }
 } */
-/* @media only screen and (max-width : 1200px) {
 
-  .container-fluid { width: 300px; } 
-
-} */
-.container-index {
+.container-inside {
   display: grid;
+  width: 100%;
+  padding-top: 20px; 
+  padding-bottom: 20px; 
+  flex-direction: row;
   grid-gap: 20px;
-  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-  text-align: center; 
-  margin: 40px;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 2fr));
+  text-align: center;
+  resize: none;
 }
 
-
-@media only screen and (max-width: 1240px) {
+@media only screen and (max-width: 1500px) {
   .item {
-    height: 350px;
+    width: auto;
   }
 }
 
-/* .item:nth-last-child(1):nth-child(odd) {
-	grid-column: 1 / span 2;
-} */
+.text-desc {
+  font-size: large;
+}
+
+.container-outer {
+  flex-direction: column; 
+  vertical-align: middle;
+  width: 100%; 
+  padding: 40px;
+}
+
+.pr-pl-40px {
+  padding-left: 40px; 
+  padding-right: 40px;
+}
+
+.container-footer {
+  padding-bottom: 40px;
+}
+
+.card-fit-right {
+  width: fit-content; 
+  margin-left:auto; 
+  margin-right:0;
+}
+
+.nav-header {
+  font-weight: bold; 
+  color:black; 
+  vertical-align:middle;
+  text-decoration: none;
+}
+
+.middle-medium {
+  font-weight: medium; 
+  color:grey; 
+  vertical-align:middle;
+}
+
+.sm-normal {
+  font-size:small; 
+  font-weight:normal;
+}
+
+.table-game-menus {
+  width: 100%;
+}
+
+.table-game-menus tr {
+  align-items: center;
+}
+
+.table-game-menus tr td {
+  padding: 10px;
+}
+
+.game-menu {
+  width: 100%;
+  margin: 0;
+}
+
+.spell_me_table {
+  border-collapse:separate; 
+  text-align:center; 
+  height:450px; 
+  width:100%;
+  border: 0;
+  border-spacing: 5px;
+}
+
+.spell_me_unchecked{
+  margin: 10px;
+  cursor: pointer;
+}
+
+.spell_me_unchecked:hover {
+  background-color:orange;
+}
+
+.spell_me_checked{
+  background-color:lightskyblue;
+}
+
+.spell_me_unchecked{
+  background-color: white;
+}
+
+.img-about {
+  border-radius: 50%;
+  height: 200px;
+  width: 200px;
+}
+
+.switch {
+  --line: #505162;
+  --dot: #f7f8ff;
+  --circle: #9ea0be;
+  --duration: 0.3s;
+  --text: #9ea0be;
+  cursor: pointer;
+}
+.switch input {
+  display: none;
+}
+.switch input + div {
+  position: relative;
+}
+.switch input + div:before, .switch input + div:after {
+  --s: 1;
+  content: '';
+  position: absolute;
+  height: 4px;
+  top: 10px;
+  width: 24px;
+  background: var(--line);
+  transform: scaleX(var(--s));
+  transition: transform var(--duration) ease;
+}
+.switch input + div:before {
+  --s: 0;
+  left: 0;
+  transform-origin: 0 50%;
+  border-radius: 2px 0 0 2px;
+}
+.switch input + div:after {
+  left: 28px;
+  transform-origin: 100% 50%;
+  border-radius: 0 2px 2px 0;
+}
+.switch input + div span {
+  padding-left: 56px;
+  line-height: 24px;
+  color: var(--text);
+}
+.switch input + div span:before {
+  --x: 0;
+  --b: var(--circle);
+  --s: 4px;
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 var(--s) var(--b);
+  transform: translateX(var(--x));
+  transition: box-shadow var(--duration) ease, transform var(--duration) ease;
+}
+.switch input + div span:not(:empty) {
+  padding-left: 64px;
+}
+.switch input:checked + div:before {
+  --s: 1;
+}
+.switch input:checked + div:after {
+  --s: 0;
+}
+.switch input:checked + div span:before {
+  --x: 28px;
+  --s: 12px;
+  --b: #9ea0be;
+}

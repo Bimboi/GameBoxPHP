@@ -4,9 +4,9 @@ class Player extends User {
     private $session_id;
     private $name;
 
-    function __construct()
+    function __construct($name)
     {
-        $this->name = isset($_SESSION['user_name']) ? $_SESSION['user_name'] : '';
+        $this->name = $name;
     }
 
     function setSessionID() {
@@ -15,6 +15,20 @@ class Player extends User {
 
     function getSessionID() {
         return $this->session_id;
+    }
+
+    function recordSession($con, $user_id) {
+        $this->setSessionID();
+        
+        $query = "insert into user_logs (session_id, user_id) values ('$this->session_id', '$user_id')";
+
+        $query_result = mysqli_query($con, $query);
+
+        if ($query_result) {
+            return $this->session_id;
+        } else {
+            return false;
+        }
     }
 
     function random_num($length)

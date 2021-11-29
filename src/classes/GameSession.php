@@ -6,14 +6,14 @@ class GameSession {
     function setGameSessionID($name)
     {
         switch ($name) {
-            case "memory":
-                $this->game_session_id = $this->random_num(14) . "memory";
+            case Constants::brainy_name:
+                $this->game_session_id = "memory" . $this->random_num(7);
                 break;
-            case "lucky":
-                $this->game_session_id = $this->random_num(15) . "lucky";
+            case Constants::lucky_name:
+                $this->game_session_id = "lucky" . $this->random_num(8);
                 break;
-            case "spell":
-                $this->game_session_id = $this->random_num(15) . "spell";
+            case Constants::spell_name:
+                $this->game_session_id = "spell" . $this->random_num(8);
                 break;
         }
     }
@@ -25,16 +25,12 @@ class GameSession {
     function random_num($length)
     {
         $text = "";
-        if ($length < 5) {
-            $length = 5;
-        }
 
-        $len = rand(4, $length);
-
-        for ($i = 0; $i < $len; $i++) {
+        for ($i = 0; $i < $length; $i++) {
             $text .= rand(0, 9);
         }
 
+        $text .= date('Ymdhis');
         return $text;
     }
 }

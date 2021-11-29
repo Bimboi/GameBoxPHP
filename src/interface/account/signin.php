@@ -3,59 +3,7 @@ if (!isset($_SESSION)) {
     session_start();
 }
 
-include_once("../../classes/Connection.php");
-include_once("../../classes/User.php");
-include_once("../../classes/Player.php");
-
-$con = new Connection();
-$user = new User();
-$result;
-
-if (isset($_POST['username_signin'])) {
-    $con->setConnection();
-    $result = $user->signIn($_POST['username_signin'], $_POST['password_signin'], $con->getConnection());
-
-    unset($_POST['username_signin']);
-    unset($_POST['password_signin']);
-
-    if ($result == 1) {
-        $_SESSION['signinOK'] = "No";
-        header("Location: " . $_SERVER['PHP_SELF']);
-    } else {
-        $user_name = $result['user_name'];
-        $_SESSION['user_name'] = $user_name;
-        $_SESSION['signinOK'] = "Yes";
-
-        $player = new Player();
-        $player->setSessionID();
-        $session_id = $player->getSessionID();
-        $_SESSION['session_id'] = $session_id;
-        
-        $query = "insert into user_logs (session_id,user_name) values ('$session_id','$user_name')";
-
-        mysqli_query($con->getConnection(), $query);
-
-        if(isset($_SESSION['game_redirect'])) {
-            $game = $_SESSION['game_redirect'];
-            unset($_SESSION['game_redirect']);
-            switch($game) {
-                case "brainy_game":
-                    header("Location: ../games/brainy/brainy_index.php");
-                    break;
-                case "lucky_game":
-                    header("Location: ../games/lucky/lucky_index.php");
-                    break;
-                case "spell_game":
-                    header("Location: ../games/spell/spell_index.php");
-                    break;
-            }
-        } else {
-            header("Location: ../games/main_index.php");
-        }
-    }
-
-    die;
-}
+include_once("../../classes/Constants.php");
 
 // include("../../utils/connection.php");
 // include("../../utils/account_functions.php");
@@ -71,6 +19,11 @@ if (isset($_POST['username_signin'])) {
     <link href="../../../asset/design.css" rel="stylesheet">
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/all.css">
+    <script>
+        if (window.history.replaceState) {
+            window.history.replaceState(null, null, window.location.href);
+        }
+    </script>
 </head>
 
 <body class="wrapper">
@@ -82,20 +35,20 @@ if (isset($_POST['username_signin'])) {
                         <a href="signup.php" class="float-right btn btn-outline-primary">Sign up</a>
                         <h4 class="card-title mb-4 mt-1">Sign in</h4>
                         <hr>
-                        <?php 
-                        if (isset($_SESSION['signinOK']) && $_SESSION['signinOK'] == "No") {
-                            $_SESSION['signinOK'] = "Reset";
-                            echo "<p class='text-danger text-center'>Wrong username or password</p>";
+                        <?php
+                        if (isset($_SESSION['sign_in_error_visible']) && $_SESSION['sign_in_error_visible'] == Constants::yes) {
+                            $_SESSION['sign_in_error_visible'] = Constants::no;
+                            echo "<p class='text-danger text-center'>Incorrect username or password</p>";
                         }
                         ?>
-                        <form method="POST">
+                        <form method="POST" action="signin_auth.php">
                             <div class="form-group">
                                 <label>Your username</label>
-                                <input name="username_signin" class="form-control" placeholder="Username" type="text" maxlength="20" required>
+                                <input name="username_signin" class="form-control" placeholder="Username" type="text" maxlength="20" autocomplete="off" onkeypress="return event.charCode != 32" required>
                             </div>
                             <div class="form-group">
                                 <label>Your password</label>
-                                <input name="password_signin" class="form-control" placeholder="******" type="password" minlength="6" maxlength="20" required>
+                                <input name="password_signin" class="form-control" placeholder="Password" type="password" maxlength="20" required>
                             </div>
                             <div class="form-group">
                             </div>

@@ -5,27 +5,30 @@ if (!isset($_SESSION)) {
 
 include_once("../../classes/Connection.php");
 include_once("../../classes/User.php");
+include_once("../../classes/Constants.php");
 
-$con = new Connection();
-$user = new User();
-$result;
+if (isset($_POST['username_signup']) and isset($_POST['password_signup'])) {
+    $user = new User($_POST['username_signup'], $_POST['password_signup']);
 
-if (isset($_POST['username_signup'])) {
-    $con->setConnection();
-    $result = $user->signUp($_POST['username_signup'], $_POST['password_signup'], $con->getConnection());
-    
     unset($_POST['username_signup']);
     unset($_POST['password_signup']);
 
-    if ($result == 0) {
-        $_SESSION['signupOK'] = "Yes";
-        header("Location: signin.php");
-    } else {
-        $_SESSION['signupOK'] = "No";
-        header("Location: " . $_SERVER['PHP_SELF']);
-    }
+    $con = new Connection();
+    $con_result = $con->checkConnection();
 
-    die;
+    if ($con_result instanceof mysqli) {
+        $sign_up_result = $user->signUp($con_result);
+        if ($sign_up_result) {
+            $_SESSION['sign_up_error_visible'] = Constants::no;
+            header("Location: signin.php");
+            die;
+        } else {
+            $_SESSION['sign_up_error_visible'] = Constants::yes;
+        }
+    } else {
+        echo "<script>alert('" . $con_result . "');</script>";
+        // header("Location: " . $_SERVER['PHP_SELF']);
+    }
 }
 
 // include("../../utils/connection.php");
@@ -42,6 +45,11 @@ if (isset($_POST['username_signup'])) {
     <link href="../../../asset/design.css" rel="stylesheet">
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/all.css">
+    <script>
+        if (window.history.replaceState) {
+            window.history.replaceState(null, null, window.location.href);
+        }
+    </script>
 </head>
 
 <body class="wrapper">
@@ -51,11 +59,11 @@ if (isset($_POST['username_signup'])) {
 
                 <div class="card">
                     <article class="card-body" style="margin: 6px;">
-                        <h4 class="card-title text-center mb-4 mt-1">Sign in</h4>
+                        <h4 class="card-title text-center mb-4 mt-1">Sign up</h4>
                         <hr>
-                        <?php 
-                        if (isset($_SESSION['signupOK']) && $_SESSION['signupOK'] == "No") {
-                            $_SESSION['signupOK'] = "Reset";
+                        <?php
+                        if (isset($_SESSION['sign_up_error_visible']) && $_SESSION['sign_up_error_visible'] == Constants::yes) {
+                            $_SESSION['sign_up_error_visible'] == Constants::no;
                             echo "<p class='text-danger text-center'>Username already exists</p>";
                         }
                         ?>
@@ -65,20 +73,20 @@ if (isset($_POST['username_signup'])) {
                                     <div class="input-group-prepend">
                                         <span class="input-group-text"> <i class="fa fa-user"></i> </span>
                                     </div>
-                                    <input name="username_signup" class="form-control" placeholder="Username" type="text" maxlength="20" required>
+                                    <input name="username_signup" class="form-control" placeholder="Username" type="text" minlength="4" maxlength="15" autocomplete="off" onkeypress="return event.charCode != 32" required>
                                 </div>
-                            </div> 
+                            </div>
                             <div class="form-group">
                                 <div class="input-group">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text"> <i class="fa fa-lock"></i> </span>
                                     </div>
-                                    <input name="password_signup" class="form-control" placeholder="******" type="password" minlength="6" maxlength="20" required>
+                                    <input name="password_signup" class="form-control" placeholder="Password" type="password" minlength="8" maxlength="15" required>
                                 </div>
-                            </div> 
+                            </div>
                             <div class="form-group">
-                                <button type="submit" class="btn btn-primary btn-block"> Create </button>
-                            </div> 
+                                <button type="submit" class="btn btn-primary btn-block">Create</button>
+                            </div>
                             <p class="text-center"><a href="signin.php" class="btn">Already have an account?</a></p>
                         </form>
                     </article>

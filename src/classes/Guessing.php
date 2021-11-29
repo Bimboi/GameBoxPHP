@@ -35,24 +35,24 @@ class Guessing extends Game
         
             $name = $_SESSION['user_name'];
         
-            echo "<p>Attempt " . $this->attempt . "</p>";
+            echo "<h5>Attempt # " . $this->attempt . "</h5>";
         
             if ($this->answer == $this->guess) {
-                $_SESSION['game_result'] = "won";
+                $_SESSION['game_result'] = Constants::won;
                 header("Location: lucky_result.php");
                 die;
             } else {
                 if ($this->answer < $this->guess) {
-                    echo $this->guess . " is wrong. </br>";
-                    echo $name . ". You should go lower.";
+                    echo "<h5>" . $this->guess . " is wrong. </br>";
+                    echo $name . ", you should go lower.</h5>";
                 }
                 if ($this->answer > $this->guess) {
-                    echo $this->guess . " is wrong. </br>";
-                    echo $name . ". You should go higher.";
+                    echo "<h5>" . $this->guess . " is wrong. </br>";
+                    echo $name . ", you should go higher.</h5>";
                 }
         
                 if ($this->attempt == 10) {
-                    $_SESSION['game_result'] = "lost";
+                    $_SESSION['game_result'] = Constants::no;
                     header("Location: lucky_result.php");
                     die;
                 }

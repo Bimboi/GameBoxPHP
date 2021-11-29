@@ -4,10 +4,14 @@
     margin:20px;
   }
   
+  .button a {
+    text-decoration: none;
+  }
+
   .button a:link{
     color:white;
     font-family:Helvetica, sans-serif;
-    font-weight:bold;
+    font-weight:normal;
     font-size:24px;
     text-align: center;
     text-decoration:none;

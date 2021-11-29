@@ -3,9 +3,21 @@ if (!isset($_SESSION)) {
     session_start();
 }
 
-if (!isset($_SESSION['session_id']) || !isset($_SESSION['game_session_id'])) {
+include_once("../../../classes/Constants.php");
+
+$game_name = Constants::lucky_name;
+
+if (!isset($_SESSION['session_id'])) {
     header("Location: ../../account/signin.php");
-    $_SESSION['game_redirect'] = "lucky_game";
+    $_SESSION['game_redirect'] = $game_name;
+    die;
+} else if (isset($_SESSION['selected_game'])) {
+    if ($_SESSION['selected_game'] != $game_name) {
+        header("Location: lucky_index.php");
+        die;
+    }
+} else {
+    header("Location: lucky_index.php");
     die;
 }
 
@@ -13,16 +25,22 @@ include_once("../../../classes/Connection.php");
 include_once("../../../classes/GamePlatform.php");
 
 if (isset($_SESSION['game_result'])) {
-    $gp = new GamePlatform();
     $con = new Connection();
-    $con->setConnection();
-    
-    if($_SESSION['game_result'] == "won"){
-        $gp->recordGame($con->getConnection(), $_SESSION['selected_game'], $_SESSION['user_name'], "won");
+    $con_result = $con->checkConnection();
+
+    if ($con_result instanceof mysqli) {
+        $game = $_SESSION['selected_game'];
+        $platform = new GamePlatform();
+        $platform->recordGame($con_result, $game);
+        unset($_SESSION['game_session_id']);
     } else {
-        $gp->recordGame($con->getConnection(), $_SESSION['selected_game'], $_SESSION['user_name'], "lost");
+        header("Location: lucky_index.php");
+        $game = new Guessing();
+        $game->unsetGameVariables();
+        unset($_SESSION['game_session_id']);
+        unset($_SESSION['game_result']);
+        die;
     }
-    unset($_SESSION['game_session_id']);
 } else {
     header("Location: lucky_index.php");
     $game = new Guessing();
@@ -30,7 +48,6 @@ if (isset($_SESSION['game_result'])) {
     unset($_SESSION['game_session_id']);
     die;
 }
-
 ?>
 
 <!DOCTYPE html>
@@ -54,7 +71,7 @@ if (isset($_SESSION['game_result'])) {
                         <h1 class="card-title text-center mb-4 mt-1">🔥 Lucky Number 🔥</h1>
                         <hr>
                         <?php
-                        if($_SESSION['game_result'] == "won") {
+                        if ($_SESSION['game_result'] == Constants::won) {
                             echo "<p>Congratulations! You won " . $_SESSION['user_name'] . "! 😭🥳</p>";
                             echo "<p>Number of attempts: " . $_SESSION['attempts'] . "</p>";
                         } else {
@@ -62,6 +79,8 @@ if (isset($_SESSION['game_result'])) {
                             echo "<p>🙊 The answer is " . $_SESSION['answer_lucky'] . " 🤯</p>";
                             echo "</br>Keep it up next time gamer!</p>";
                         }
+                        $game = new Guessing();
+                        $game->unsetGameVariables();
                         unset($_SESSION['game_result']);
                         ?>
                         <p><a href="lucky_index.php">Start another game?</a>
@@ -73,8 +92,3 @@ if (isset($_SESSION['game_result'])) {
 </body>
 
 </html>
-
-<?php
-$game = new Guessing();
-$game->unsetGameVariables();
-?>

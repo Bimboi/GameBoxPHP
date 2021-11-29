@@ -3,24 +3,23 @@ if (!isset($_SESSION)) {
     session_start();
 }
 
+include_once("../../../classes/Constants.php");
+
+$game_name = Constants::brainy_name;
+
 if (!isset($_SESSION['session_id'])) {
     header("Location: ../../account/signin.php");
-    $_SESSION['game_redirect'] = "brainy_game";
+    $_SESSION['game_redirect'] = $game_name;
     die;
 }
-echo "<script>console.log('id " . $_SESSION['session_id'] . "')</script>";
-
 
 include_once("../../../classes/Connection.php");
 include_once("../../../classes/GamePlatform.php");
 
 $game = new GamePlatform();
-$game->pickGame("memory");
+$game->pickGame($game_name);
 $game = new Memory();
 $game->unsetPicks();
-echo "<script>console.log('attempt " . $_SESSION['attempts'] . "')</script>";
-
-
 ?>
 
 <!DOCTYPE html>
@@ -35,6 +34,7 @@ echo "<script>console.log('attempt " . $_SESSION['attempts'] . "')</script>";
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/all.css">
 </head>
+
 <body>
     <div class="wrapper" style="background: url('https://www.toptal.com/designers/subtlepatterns/patterns/darkness.png');">
         <div class="container">
@@ -51,16 +51,15 @@ echo "<script>console.log('attempt " . $_SESSION['attempts'] . "')</script>";
                                 <div class="row justify-content-center">
                                     <div ontouchstart="">
                                         <div class="button_back">
-                                            <a href="../main_index.php" style="color: white;">Back</a>
+                                            <a href="../main_index.php" style="color: white; font-weight: bold;">Back</a>
                                         </div>
                                     </div>
                                     <div ontouchstart="">
                                         <div class="button">
-                                            <a href="brainy_play.php" style="color: white;">Start</a>
+                                            <a href="brainy_play.php" style="color: white; font-weight: bold;">Start</a>
                                         </div>
                                     </div>
                                 </div>
-
                             </div>
                         </article>
 
@@ -69,12 +68,12 @@ echo "<script>console.log('attempt " . $_SESSION['attempts'] . "')</script>";
             </div>
         </div>
     </div>
-    <div class="navbar fixed-bottom" style="color: black;">
-            <?php
-            $id = isset($_SESSION['session_id']) ? "ID: " . $_SESSION['session_id'] : '';
-            echo $id;
-            ?>
-        </div>
+    <div class="navbar fixed-bottom" style="color: white;">
+        <?php
+        $id = isset($_SESSION['session_id']) ? "ID: " . $_SESSION['session_id'] : '';
+        echo $id;
+        ?>
+    </div>
 </body>
 
 </html>
